@@ -9,18 +9,21 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class RestaurantOrderServicesStub implements RestaurantOrderServices {
 
-    
-    BillCalculator calc = null;
+    @Autowired    
+    BillCalculator calc;
 
     public RestaurantOrderServicesStub() {
     }
 
-    public void setBillCalculator(BillCalculator calc) {
-        this.calc = calc;
-    }
+    // public void setBillCalculator(BillCalculator calc) {
+    //     this.calc = calc;
+    // }
 
     @Override
     public Order getTableOrder(int tableNumber) {

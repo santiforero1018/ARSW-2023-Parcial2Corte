@@ -20,9 +20,14 @@ import edu.eci.arsw.myrestaurant.model.Order;
 import edu.eci.arsw.myrestaurant.model.ProductType;
 import edu.eci.arsw.myrestaurant.model.RestaurantProduct;
 import edu.eci.arsw.myrestaurant.services.RestaurantOrderServicesStub;
+import edu.eci.arsw.myrestaurant.services.RestaurantOrderServices;
 import java.util.Hashtable;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+
+import com.google.gson.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,9 +37,36 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  *
- * @author hcadavid
+ * @author Santiago Forero Yate
  */
+@RestController
+@RequestMapping(value = "/orders")
 public class OrdersAPIController {
 
-    
+    @Autowired
+    RestaurantOrderServices ros;
+
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<?> getAllOrders() {
+        try {
+            System.out.println(ros.getTablesWithOrders().toArray(new Integer[ros.getTablesWithOrders().size()])[1]);
+            Integer[] aux = ros.getTablesWithOrders().toArray(new Integer[ros.getTablesWithOrders().size()]);
+
+            String resp = "";
+
+
+
+            for(int i=0; i<aux.length;i++){
+                resp += ros.calculateTableBill(aux[i]);
+                resp += " ";
+            }
+
+            
+
+            return new ResponseEntity<String>(resp,HttpStatus.ACCEPTED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            // TODO: handle exception
+        }
+    }
 }
